@@ -291,7 +291,13 @@ export class TypeaheadDirective implements OnInit, OnDestroy {
         dropup: this.dropup
       });
 
-    this._outsideClickListener = this.renderer.listen('document', 'click', () => {
+    this._outsideClickListener = this.renderer.listen('document', 'click', (e: MouseEvent) => {
+      if (this.typeaheadMinLength === 0) {
+        if (!this.element.nativeElement.contains(e.target)) {
+          this.onOutsideClick();
+        }
+        return;
+      }
       this.onOutsideClick();
     });
 
